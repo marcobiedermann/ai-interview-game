@@ -1,8 +1,7 @@
-import { OpenAIApi, Configuration } from 'openai';
-import { Quiz } from './domain/common';
-import { z } from 'zod';
+import { Configuration, OpenAIApi } from 'openai';
+import { Quiz } from '../domain/common';
 
-let openAiModule = null;
+let openAiModule: OpenAIApi | null = null;
 
 function initializeOpenAiModule(apiKey?: string) {
   openAiModule = new OpenAIApi(
@@ -10,19 +9,27 @@ function initializeOpenAiModule(apiKey?: string) {
   );
 }
 
-const responseSchema = z.object({});
+interface Question {
+  Question: string;
+  Answer: keyof Question;
+  A: string;
+  B: string;
+  C: string;
+  D: string;
+}
 
 async function askChatGPT(question: string, apiKey?: string): Promise<Quiz[]> {
-  if (openAiModule == null) {
+  if (!openAiModule) {
     initializeOpenAiModule(apiKey);
   }
 
-  const quiz = await openAiModule.createCompletion({
+  const quiz = await openAiModule!.createCompletion({
     model: 'text-davinci-003',
     prompt: question,
     max_tokens: 4000,
   });
-  const res = JSON.parse(quiz.data.data.choices[0].text);
+  const res = JSON.parse(quiz.data.choices.at(0)?.text || '') as Question[];
+
   return res.map((obj) => ({
     question: obj.Question,
     answer: obj[obj.Answer],

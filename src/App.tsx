@@ -1,17 +1,14 @@
-import { useForm } from 'react-hook-form';
-import './App.css';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { isError, useQuery } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
-import { Link, useLocation, useSearchParams } from 'react-router-dom';
 import clsx from 'clsx';
-import { Quiz } from './domain/common';
-import { askChatGPT } from './services/chatgpt';
-import { getPrompt } from './utils';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { Link } from 'react-router-dom';
 import { useLocalStorage } from 'react-use';
-import { defaultSettings } from './Settings';
+import { z } from 'zod';
+import './App.css';
+import { FormData as SettingsFormData, defaultSettings } from './Settings';
 import { useChatGPT } from './hooks/chat-gpt';
+import { getPrompt } from './utils';
 
 const formDataSchema = z.object({
   answer: z.string(),
@@ -20,9 +17,9 @@ const formDataSchema = z.object({
 type FormData = z.infer<typeof formDataSchema>;
 
 function App() {
-  const [settings] = useLocalStorage('settings', defaultSettings);
+  const [settings] = useLocalStorage<SettingsFormData>('settings', defaultSettings);
   const prompt = getPrompt(settings!);
-  const { data: questions, error, isError, isLoading } = useChatGPT(prompt, settings?.apiKey!);
+  const { data: questions, error, isError, isLoading } = useChatGPT(prompt, settings!.apiKey!);
   const { register, handleSubmit } = useForm<FormData>({
     resolver: zodResolver(formDataSchema),
   });
@@ -81,7 +78,7 @@ function App() {
 
       <div>
         <button
-          disabled={currentQuestion + 1 === settings.numberOfQuestions}
+          disabled={currentQuestion + 1 === settings!.numberOfQuestions}
           onClick={() => setCurrentQuestion(currentQuestion + 1)}
         >
           skip

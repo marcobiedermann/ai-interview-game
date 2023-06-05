@@ -1,6 +1,6 @@
 import { rest } from 'msw';
 
-const response = {
+const result = {
   data: {
     id: 'cmpl-7Go9peuDuQkCM9wHF94ZKSz2LVlhW',
     object: 'text_completion',
@@ -53,50 +53,7 @@ const response = {
 };
 
 export const handlers = [
-  rest.post('https://api.openai.com/v1/completions', (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(response));
+  rest.post('https://api.openai.com/v1/completions', (_request, response, context) => {
+    return response(context.status(200), context.json(result));
   }),
 ];
-
-// [
-//   {
-//     Question: 'What are the advantages of using JavaScript?',
-//     A: 'It runs on the client side',
-//     B: 'It is an interpreted language',
-//     C: 'It is an object-oriented programming language',
-//     D: 'All of the above',
-//     Answer: 'D'
-//   },
-//   {
-//     Question: 'What keyword is used to define a function in JavaScript?',
-//     A: 'func',
-//     B: 'create',
-//     C: 'function',
-//     D: 'define',
-//     Answer: 'C'
-//   },
-//   {
-//     Question: 'What type of data structure is an array in JavaScript?',
-//     A: 'String',
-//     B: 'Object',
-//     C: 'Number',
-//     D: 'Collection',
-//     Answer: 'D'
-//   },
-//   {
-//     Question: 'What keyword is used to compose a conditional statement in JavaScript?',
-//     A: 'compare',
-//     B: 'if',
-//     C: 'select',
-//     D: 'switch',
-//     Answer: 'B'
-//   },
-//   {
-//     Question: 'How do you call a function from another file in JavaScript?',
-//     A: 'Include the file and call the function',
-//     B: 'Declare the function globally',
-//     C: 'Use the function keyword',
-//     D: 'Import the function into the current file',
-//     Answer: 'D'
-//   }
-// ]

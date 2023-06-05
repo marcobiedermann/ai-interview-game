@@ -25,15 +25,15 @@ const supportedLanguages = [
 
 const supportedNumberOfQuestions = [
   {
-    id: '5',
+    id: 5,
     name: '5',
   },
   {
-    id: '10',
+    id: 10,
     name: '10',
   },
   {
-    id: '15',
+    id: 15,
     name: '15',
   },
 ];
@@ -51,11 +51,14 @@ const supportedDifficulties = [
 
 const formDataSchema = z.object({
   apiKey: z.string(),
-  language: z.union(supportedLanguages.map((supportedLanguage) => z.literal(supportedLanguage.id))),
-  numberOfQuestions: z.number().int(),
-  difficulty: z.union(
-    supportedDifficulties.map((supportedDifficulty) => z.literal(supportedDifficulty.id)),
-  ),
+  language: z.union([
+    z.literal('go'),
+    z.literal('javascript'),
+    z.literal('python'),
+    z.literal('rust'),
+  ]),
+  numberOfQuestions: z.union([z.literal(5), z.literal(10), z.literal(15)]),
+  difficulty: z.union([z.literal('easy'), z.literal('hard')]),
 });
 
 type FormData = z.infer<typeof formDataSchema>;
@@ -70,16 +73,10 @@ const defaultSettings = {
 function SettingsPage() {
   const navigate = useNavigate();
   const [settings, setSettings] = useLocalStorage<FormData>('settings', defaultSettings);
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormData>({
+  const { register, handleSubmit } = useForm<FormData>({
     defaultValues: settings,
     resolver: zodResolver(formDataSchema),
   });
-
-  console.log({ errors });
 
   function onSubmit(data: FormData) {
     setSettings(data);
@@ -146,5 +143,6 @@ function SettingsPage() {
   );
 }
 
+export type { FormData };
 export { defaultSettings };
 export default SettingsPage;
