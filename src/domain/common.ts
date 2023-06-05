@@ -1,11 +1,11 @@
 interface Quiz {
   question: string;
-  answer: number;
-  options: Record<number, string>;
+  answer: string;
+  options: string[];
 }
 
 interface Error {
   message: string;
 }
 
-export { Quiz, Error };
+export type { Quiz, Error };

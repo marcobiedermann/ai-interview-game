@@ -1,7 +1,7 @@
 interface Attributes {
-  numberOfQuestions?: number;
+  numberOfQuestions?: 5 | 10 | 15;
   difficulty?: 'easy' | 'hard';
-  language?: 'javascript' | 'go' | 'python';
+  language?: 'javascript' | 'go' | 'python' | 'rust';
 }
 
 function getPrompt(attributes: Attributes): string {
