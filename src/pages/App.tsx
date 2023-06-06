@@ -5,10 +5,9 @@ import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { useLocalStorage } from 'react-use';
 import { z } from 'zod';
-import './App.css';
 import { FormData as SettingsFormData, defaultSettings } from './Settings';
-import { useChatGPT } from './hooks/chat-gpt';
-import { getPrompt } from './utils';
+import { useChatGPT } from '../hooks/chat-gpt';
+import { getPrompt } from '../utils';
 
 const formDataSchema = z.object({
   answer: z.string(),

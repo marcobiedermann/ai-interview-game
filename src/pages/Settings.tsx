@@ -50,7 +50,6 @@ const supportedDifficulties = [
 ] as const;
 
 const formDataSchema = z.object({
-  apiKey: z.string(),
   language: z.union([
     z.literal('go'),
     z.literal('javascript'),
@@ -64,7 +63,6 @@ const formDataSchema = z.object({
 type FormData = z.infer<typeof formDataSchema>;
 
 const defaultSettings = {
-  apiKey: import.meta.env.VITE_OPENAPI_API_KEY,
   language: 'javascript',
   numberOfQuestions: 5,
   difficulty: 'easy',
@@ -88,11 +86,6 @@ function SettingsPage() {
       <h1>Settings</h1>
       <form onSubmit={handleSubmit(onSubmit)} className="form">
         <div className="form__fields">
-          <div className="form__field">
-            <label htmlFor="api-key">API Key</label>
-            <input id="api-key" type="text" className="form__input--text" {...register('apiKey')} />
-          </div>
-
           <div className="form__field">
             <label htmlFor="language">Language</label>
             <select id="language" {...register('language')}>

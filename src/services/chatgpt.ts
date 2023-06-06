@@ -5,7 +5,9 @@ let openAiModule: OpenAIApi | null = null;
 
 function initializeOpenAiModule(apiKey?: string) {
   openAiModule = new OpenAIApi(
-    new Configuration({ apiKey: apiKey ?? import.meta.env.VITE_OPENAPI_API_KEY }),
+    new Configuration({
+      apiKey,
+    }),
   );
 }
 
